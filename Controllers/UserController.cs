@@ -31,7 +31,13 @@ namespace ProjetoWeb.Controllers
 
             return user;
         }
-        
+		
+		[HttpPost("Authenticate")]
+		public bool Authenticate(UserModel user)
+		{
+			return _services.Authenticate(user);
+		}
+
         [HttpGet]
         [Route("GetUsers")]
         public ActionResult<IEnumerable<UserModel>> GetUsers()

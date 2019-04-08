@@ -69,6 +69,15 @@ namespace ProjetoWeb.Services
             return rows;
         }
 
+        public bool Authenticate(UserModel user)
+        {
+            var query = $"select 1 from usuario where Email like @Email and Senha like @Senha";
+
+            ContactServer(null, query, user, null, 6);
+
+            return rows != 0;
+        }
+
 
         public void ContactServer(List<UserModel> list, string _query, UserModel model, UserModel originalModel, int search)
         {
@@ -159,6 +168,10 @@ namespace ProjetoWeb.Services
                                     model.IdUser = -1;
                                 }
                             }
+							else if(search == 6)//Any()
+							{
+								rows = reader.HasRows ? 1 : 0;
+							}
                         }
                     }
                 }

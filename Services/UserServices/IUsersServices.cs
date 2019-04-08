@@ -10,6 +10,8 @@ namespace ProjetoWeb.Services
     {
         UserModel AddUser(UserModel userToAdd);
 
+		bool Authenticate(UserModel user);
+
         List<UserModel> GetUsers();
 
         UserModel FindById(int id);
