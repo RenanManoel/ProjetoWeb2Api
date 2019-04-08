@@ -79,6 +79,40 @@ namespace ProjetoWeb.Controllers
             return _services.FindById(id);
         }
 
+		[HttpPut("ChangePassword")]
+		public bool ChangePassword(ModelTrocarSenha model)
+		{
+			return UpdatePassword(model, true);
+		}
+
+		[HttpPut("ResetPassword")]
+		public bool ResetPassword(ModelTrocarSenha model)
+		{
+			return UpdatePassword(model, false);
+		}
+
+		private bool UpdatePassword(ModelTrocarSenha model, bool checksNewPasswordMatchesOld)
+		{
+			var usuario = _services.GetUsers().Where(u => u.Email == model.Email).FirstOrDefault();
+
+			if(usuario == null)
+				return false;
+
+			if(checksNewPasswordMatchesOld && usuario.Senha != model.SenhaAntiga)
+				return false;
+
+			_services.Update(new UserModel()
+			{
+				Email = usuario.Email,
+				Senha = model.SenhaNova,
+				IdUser = usuario.IdUser,
+				NomeCompleto = usuario.NomeCompleto,
+				TipoUsuarioId = usuario.TipoUsuarioId
+			}, usuario);
+
+			return true;
+		}
+
         [HttpDelete]
         [Route("DeleteUser")]
         public string DeleteUser(int id)
